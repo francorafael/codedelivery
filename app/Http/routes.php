@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', function () {
+    return view('welcome');
+});
+
 Route::get('/test', function() {
 
     $repository = app()->make('CodeDelivery\Repositories\CategoryRepository');
@@ -22,7 +26,7 @@ Route::get('/test', function() {
 
 });
 
-Route::group(['prefix'=>'admin', 'middleware' => 'auth.checkrole', 'as' => 'admin.'], function() {
+Route::group(['prefix'=>'admin', 'middleware' => 'auth.checkrole:admin', 'as' => 'admin.'], function() {
 
     Route::get('categories', ['as'=>'categories.index', 'uses' => 'CategoryController@index']);
     Route::get('categories/create', ['as'=>'categories.create', 'uses' => 'CategoryController@create']);
@@ -49,5 +53,19 @@ Route::group(['prefix'=>'admin', 'middleware' => 'auth.checkrole', 'as' => 'admi
     Route::get('orders/{id}', ['as'=>'orders.edit', 'uses' => 'OrderController@edit']);
     Route::post('orders/update/{id}', ['as'=>'orders.update', 'uses' => 'OrderController@update']);
 
+    Route::get('cupoms', ['as'=>'cupoms.index', 'uses' => 'CupomController@index']);
+    Route::get('cupoms/create', ['as'=>'cupoms.create', 'uses' => 'CupomController@create']);
+    Route::get('cupoms/edit/{id}', ['as'=>'cupoms.edit', 'uses' => 'CupomController@edit']);
+    Route::post('cupoms/update/{id}', ['as'=>'cupoms.update', 'uses' => 'CupomController@update']);
+    Route::post('cupoms/store', ['as'=>'cupoms.store', 'uses' => 'CupomController@store']);
+    Route::get('cupoms/delete/{id}', ['as'=>'cupoms.delete', 'uses' => 'CupomController@destroy']);
+
+
+});
+
+Route::group(['prefix'=>'customer', 'middleware' => 'auth.checkrole:client', 'as' => 'customer.'], function() {
+    Route::get('order', ['as'=>'order.index', 'uses' => 'CheckoutController@index']);
+    Route::get('order/create', ['as'=>'order.new', 'uses' => 'CheckoutController@create']);
+    Route::post('order/store', ['as'=>'order.store', 'uses' => 'CheckoutController@store']);
 });
 

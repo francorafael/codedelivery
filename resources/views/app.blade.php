@@ -116,36 +116,61 @@
 					<!-- .nav -->
 					<ul class="nav navbar-left navbar-nav">
 						<li><a href="{{ url('/home') }}">Dashboard</a></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								Categories <b class="caret"></b>
-							</a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ route('admin.categories.create') }}">Add Category</a></li>
-								<li><a href="{{ route('admin.categories.index') }}">List Categories</a></li>
-							</ul>
-						</li>
+						@if(Auth::user())
+							@if(Auth::user()->role == "admin")
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Categories <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ route('admin.categories.create') }}">Add Category</a></li>
+									<li><a href="{{ route('admin.categories.index') }}">List Categories</a></li>
+								</ul>
+							</li>
 
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								Products <b class="caret"></b>
-							</a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ route('admin.products.create') }}">Add Product</a></li>
-								<li><a href="{{ route('admin.products.index') }}">List Products</a></li>
-							</ul>
-						</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Products <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ route('admin.products.create') }}">Add Product</a></li>
+									<li><a href="{{ route('admin.products.index') }}">List Products</a></li>
+								</ul>
+							</li>
 
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								Clients <b class="caret"></b>
-							</a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ route('admin.clients.create') }}">Add Client</a></li>
-								<li><a href="{{ route('admin.clients.index') }}">List Clients</a></li>
-							</ul>
-						</li>
-						<li><a href="{{ route('admin.orders.index') }}">Orders</a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Clients <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ route('admin.clients.create') }}">Add Client</a></li>
+									<li><a href="{{ route('admin.clients.index') }}">List Clients</a></li>
+								</ul>
+							</li>
+
+							<li><a href="{{ route('admin.orders.index') }}">Orders</a></li>
+
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Cupoms <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ route('admin.cupoms.create') }}">Add Cupom</a></li>
+									<li><a href="{{ route('admin.cupoms.index') }}">List Cupoms</a></li>
+								</ul>
+							</li>
+							@elseif(Auth::user()->role == "client")
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										Orders <b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li><a href="{{ route('customer.order.new') }}">New Order</a></li>
+										<li><a href="{{ route('customer.order.index') }}">My Orders</a></li>
+									</ul>
+								</li>
+							@endif
+						@endif
 					</ul><!-- /.nav -->
 
 
@@ -174,6 +199,8 @@
 							<i class="fa fa-dashboard"></i> Dashboard
 						</a>
 					</li>
+					@if(Auth::user())
+					@if(Auth::user()->role == "admin")
 					<!-- BEGIN COMPONENTS DROPDOWN -->
 					<li class="panel">
 						<a  href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#categories">
@@ -242,6 +269,46 @@
 							</li>
 						</ul>
 					</li>
+
+
+					<li class="panel">
+						<a  href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#cupoms">
+							<i class="fa fa-barcode"></i> Cupoms <span class="fa arrow"></span>
+						</a>
+						<ul class="collapse nav" id="cupoms">
+							<li>
+								<a href="{{ route('admin.cupoms.create') }}">
+									<i class="fa fa-plus"></i> Add Cupom
+								</a>
+							</li>
+							<li>
+								<a href="{{ route('admin.cupoms.index') }}">
+									<i class="fa fa-list"></i> List Cupoms
+								</a>
+							</li>
+						</ul>
+					</li>
+
+					@elseif(Auth::user()->role == "client")
+						<li class="panel">
+							<a  href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#myorders">
+								<i class="fa fa-cart-plus"></i> Orders <span class="fa arrow"></span>
+							</a>
+							<ul class="collapse nav" id="myorders">
+								<li>
+									<a href="{{ route('customer.order.new') }}">
+										<i class="fa fa-plus"></i> New Order
+									</a>
+								</li>
+								<li>
+									<a href="{{ route('customer.order.index') }}">
+										<i class="fa fa-list"></i> My Orders
+									</a>
+								</li>
+							</ul>
+						</li>
+					@endif
+					@endif
 
 					<!-- END COMPONENTS DROPDOWN -->
 				</ul><!-- /.side-nav -->
@@ -314,5 +381,7 @@
 	<script src="{{ url('assets/js/home-page.init.js') }}"></script>
 	<script src="{{ url('assets/js/plugins/jquery-sparkline/jquery.sparkline.init.js') }}"></script>
 	<script src="{{ url('assets/js/plugins/easypiechart/jquery.easypiechart.init.js') }}"></script>
+
+	@yield('post-script')
 </body>
 </html>
