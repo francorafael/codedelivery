@@ -60,12 +60,25 @@ Route::group(['prefix'=>'admin', 'middleware' => 'auth.checkrole:admin', 'as' =>
     Route::post('cupoms/store', ['as'=>'cupoms.store', 'uses' => 'CupomController@store']);
     Route::get('cupoms/delete/{id}', ['as'=>'cupoms.delete', 'uses' => 'CupomController@destroy']);
 
-
 });
 
 Route::group(['prefix'=>'customer', 'middleware' => 'auth.checkrole:client', 'as' => 'customer.'], function() {
     Route::get('order', ['as'=>'order.index', 'uses' => 'CheckoutController@index']);
     Route::get('order/create', ['as'=>'order.new', 'uses' => 'CheckoutController@create']);
     Route::post('order/store', ['as'=>'order.store', 'uses' => 'CheckoutController@store']);
+});
+
+Route::post('oauth/access_token', function() {
+    return Response::json(Authorizer::issueAccessToken());
+});
+
+Route::group(['prefix'=>'api', 'middleware' => 'oauth', 'as' => 'api.'], function() {
+    Route::get('teste', function () {
+       return [
+            'id' => 1,
+           'client' => 'Jacob',
+           'total' => 10
+       ];
+    });
 });
 
