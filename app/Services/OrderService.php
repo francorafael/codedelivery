@@ -38,6 +38,10 @@ class OrderService
         try {
             $data['status'] = 0;
 
+        if(isset($data['cupom_id']))
+        {
+            unset($data['cupom_id']);
+        }
         if(isset($data['cupom_code']))
         {
             $cupom = $this->cupomRepository->findByField('code', $data['cupom_code'])->first();

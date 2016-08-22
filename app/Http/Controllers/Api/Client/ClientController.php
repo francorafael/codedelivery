@@ -23,7 +23,7 @@ class ClientController extends Controller
 
     }
 
-        public function authenticated()
+    public function authenticated()
     {
         $userId = Authorizer::getResourceOwnerId();
         return $this->userRepository->with(['client'])->find($userId);

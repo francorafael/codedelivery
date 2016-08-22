@@ -5,6 +5,7 @@ namespace CodeDelivery\Models;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class Order extends Model implements Transformable
 {
@@ -14,8 +15,10 @@ class Order extends Model implements Transformable
         'client_id',
         'user_deliveryman_id',
         'total',
-        'status'
+        'status',
+        'cupom_id'
     ];
+
 
     public function items()
     {
@@ -37,5 +40,9 @@ class Order extends Model implements Transformable
         return $this->belongsTo(Cupom::class);
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 
 }

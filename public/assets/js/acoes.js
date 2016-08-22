@@ -143,7 +143,7 @@ function cancelarVenda(codigo, nome) {
 }
 
 $(document).ready(function () {
-    $('.set-numeric').maskMoney({ thousands: '', decimal: '.' });
+    $('.set-numeric').maskMoney({ thousands: '2', decimal: ',' });
 });
 
 $(function () {

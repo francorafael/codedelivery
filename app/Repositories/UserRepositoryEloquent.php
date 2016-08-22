@@ -19,6 +19,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      *
      * @return string
      */
+
     public function model()
     {
         return User::class;
@@ -35,5 +36,10 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return \CodeDelivery\Presenters\UserPresenter::class;
     }
 }
