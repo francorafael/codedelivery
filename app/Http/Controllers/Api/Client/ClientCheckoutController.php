@@ -37,7 +37,7 @@ class ClientCheckoutController extends Controller
     public function index()
     {
         $id = Authorizer::getResourceOwnerId();
-        $clientId = $this->userRepository->find($id)->client->id;
+        $clientId = $this->userRepository->skipPresenter()->find($id)->client->id;
         $orders = $this->orderRepository
             ->skipPresenter(false)
             ->with($this->with)->scopeQuery(function($query) use ($clientId) {

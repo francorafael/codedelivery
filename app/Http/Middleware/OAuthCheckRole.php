@@ -29,7 +29,7 @@ class OAuthCheckRole
         //3º BUSCAR O USUARIO E VERIFICAR A ROLE E COMPARAR COM A ROLE QUE FOI PASSADA PELA ROTA
 
         $id = Authorizer::getResourceOwnerId();
-        $user = $this->userRepository->find($id);
+        $user = $this->userRepository->skipPresenter()->find($id);
 
         if($user->role != $role)
         {
