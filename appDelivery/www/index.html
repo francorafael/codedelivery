@@ -19,53 +19,13 @@
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
+    <script src="js/controllers/homeCtrl.js"></script>
     <script src="js/app.js"></script>
   </head>
   <body ng-app="starter">
+    <ion-nav-bar class="bar bar-positive">
 
-    <ion-pane>
-      <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
-      </ion-header-bar>
-      <ion-content class="padding has-subheader">
-        <ul class="list">
-          <li class="item">
-            Item 01
-          </li>
-          <div class="item item-divider">
-            Item 01
-          </div>
-          <a class="item item-icon-left" href="#">
-            <i class="icon ion-mic-a"></i>
-            Record album
-            <span class="item-note">
-              Grammy
-            </span>
-          </a>
-        </ul>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          A beatae earum excepturi, iusto perferendis provident ratione temporibus!
-          Ab in, mollitia nesciunt omnis pariatur perspiciatis vitae! Iusto necessitatibus quaerat sit temporibus?
-        </p>
-        <a href="javascript:void(0)" class="button button-assertive ion-log-in icon-left">Clique aqui</a>
-      </ion-content>
-      <ion-tabs class="tabs-positive tabs-icon-top">
-
-        <ion-tab title="Home" icon-on="ion-ios-filing" icon-off="ion-ios-filing-outline">
-          <!-- Tab 1 content -->
-        </ion-tab>
-
-        <ion-tab title="About" icon-on="ion-ios-clock" icon-off="ion-ios-clock-outline">
-          <!-- Tab 2 content -->
-        </ion-tab>
-
-        <ion-tab title="Settings" icon-on="ion-ios-gear" icon-off="ion-ios-gear-outline">
-          <!-- Tab 3 content -->
-        </ion-tab>
-
-      </ion-tabs>
-      </div>
-    </ion-pane>
+    </ion-nav-bar>
+    <ion-nav-view></ion-nav-view>
   </body>
 </html>
