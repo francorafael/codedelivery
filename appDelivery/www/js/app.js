@@ -3,9 +3,28 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'starter.controllers', 'angular-oauth2'])
 
-.run(function($ionicPlatform) {
+var starter = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-oauth2']);
+
+angular.module('starter.controllers', ['ngMessages', 'angular-oauth2']);
+angular.module('starter.filters', []);
+angular.module('starter.services', ['ngResource']);
+angular.module('starter.directives', []);
+
+
+starter.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSerializerProvider){
+    var config = {
+        baseUrl: 'http://localhost:8000/',
+    };
+    return {
+        config: config,
+        $get: function() {
+            return config;
+        }
+    }
+}]);
+
+starter.run(['$ionicPlatform', function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -21,9 +40,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angular-oauth2'])
       StatusBar.styleDefault();
     }
   });
-})
+}])
 
-    .config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', function ($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider) {
+starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', function ($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider) {
 
         /*AUTENTICACAO*/
         OAuthProvider.configure({
@@ -53,9 +72,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angular-oauth2'])
             .state('home', {
                 url:'/home',
                 templateUrl: 'templates/home.html',
-                controller: function($scope) {
-                    $scope.msg = "VOCE ESTA LOGADO"
-                }
+                controller: 'HomeCtrl'
             })
         ;
         $urlRouterProvider.otherwise('/');
