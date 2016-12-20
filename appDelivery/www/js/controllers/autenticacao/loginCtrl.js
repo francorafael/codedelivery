@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers')
     .controller('LoginCtrl',[
     '$scope', 'OAuth', '$ionicPopup', '$state', '$cookies', 'User',
     function ($scope, OAuth, $ionicPopup, $state, $cookies, User) {
@@ -31,5 +31,4 @@ angular.module('starter.controllers', [])
         function ($scope, $cookies) {
             $scope.user = $cookies.getObject('user');
             console.log($cookies.getObject('user'));
-
     }]);

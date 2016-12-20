@@ -15,6 +15,9 @@ use CodeDelivery\Validators\ProductValidator;
 class ProductRepositoryEloquent extends BaseRepository implements ProductRepository
 {
 
+    //DESATIVOU O PRESENTER POR PADRÂO
+    //QUANDO QUISER UTILIZAR TERA QUE ATIVAR
+    protected $skipPresenter = true;
     /**
      * Specify Model class name
      *
@@ -37,4 +40,11 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    public function presenter()
+    {
+        return \CodeDelivery\Presenters\ProductPresenter::class;
+    }
+
+
 }

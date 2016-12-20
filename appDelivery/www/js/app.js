@@ -4,13 +4,12 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-var starter = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-oauth2']);
-
-angular.module('starter.controllers', ['ngMessages', 'angular-oauth2']);
+angular.module('starter.controllers', []);
 angular.module('starter.filters', []);
 angular.module('starter.services', ['ngResource']);
 angular.module('starter.directives', []);
 
+var starter = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-oauth2']);
 
 starter.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSerializerProvider){
     var config = {
@@ -23,6 +22,16 @@ starter.provider('appConfig', ['$httpParamSerializerProvider', function($httpPar
         }
     }
 }]);
+
+starter.constant('appDevConfig', {
+    baseUrl: 'http://localhost:8000/'
+});
+
+starter.service('cart', function() {
+   this.items = [];
+});
+
+
 
 starter.run(['$ionicPlatform', function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -42,11 +51,13 @@ starter.run(['$ionicPlatform', function($ionicPlatform) {
   });
 }])
 
-starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', function ($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider) {
+starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appDevConfig',
+    function ($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, appDevConfig) {
+
 
         /*AUTENTICACAO*/
         OAuthProvider.configure({
-            baseUrl: 'http://localhost:8000/',
+            baseUrl: appDevConfig.baseUrl,
             clientId: 'appid1',
             clientSecret: 'secret', // optional
             grantPath: 'oauth/access_token'
@@ -65,14 +76,51 @@ starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthT
             /*LOGIN*/
             .state('login', {
                 url:'/login',
-                templateUrl: 'templates/login.html',
+                templateUrl: 'templates/autenticacao/login.html',
                 controller: 'LoginCtrl'
             })
             /*HOME*/
             .state('home', {
                 url:'/home',
                 templateUrl: 'templates/home.html',
-                controller: 'HomeCtrl'
+                controller:  'HomeCtrl'
+            })
+            /*CLIENT*/
+            .state('client', {
+                abstract: true,
+                url:'/client',
+                template:'<ion-nav-view/>'
+            })
+            .state('client.checkout', {
+                cache: false,
+                url: '/checkout',
+                templateUrl: 'templates/client/checkout.html',
+                controller: 'ClientCheckoutCtrl'
+            })
+            .state('client.checkout_detail', {
+                url: '/checkout/detail/:index',
+                templateUrl: 'templates/client/checkout-detail.html',
+                controller: 'ClientCheckoutDetailCtrl'
+            })
+
+            .state('client.checkout_successful', {
+                cache: false,
+                url: '/checkout/successful',
+                templateUrl: 'templates/client/checkout-successful.html',
+                controller: 'ClientCheckoutSuccessfulCtrl'
+            })
+
+            .state('client.checkout_orders', {
+                cache: false,
+                url: '/checkout/orders',
+                templateUrl: 'templates/client/checkout-orders.html',
+                controller: 'ClientCheckoutOrderListCtrl'
+            })
+
+            .state('client.view_product', {
+                url: '/view_products',
+                templateUrl: 'templates/client/view-product.html',
+                controller: 'ClientViewProductCtrl'
             })
         ;
         $urlRouterProvider.otherwise('/');

@@ -3,7 +3,7 @@
 namespace CodeDelivery\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use CodeDelivery\Models\Deliveryman;
+use CodeDelivery\Models\User;
 
 /**
  * Class DeliverymanTransformer
@@ -18,12 +18,12 @@ class DeliverymanTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform(Deliveryman $model)
+    public function transform(User $model)
     {
         return [
             'id'            => $model->id,
-            'name'          => $model->user()->first()->name,
-            'email'         => $model->user()->first()->email
+            'name'          => $model->name,
+            'email'         => $model->email
         ];
     }
 }

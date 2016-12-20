@@ -25,6 +25,7 @@ class CheckoutRequest extends Request
 
     public function rules(HttpRequest $request)
     {
+
         $rules =  [
             'cupom_code'            => 'exists:cupoms,code,used,0'
         ];

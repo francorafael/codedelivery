@@ -1,0 +1,16 @@
+<ion-view>
+    <ion-nav-title>Meus Pedidos</ion-nav-title>
+    <ion-content class="padding has-subheader">
+        <ion-list>
+            <ion-item ng-repeat="o in orders.data">
+                ID: #{{o.id}}<br />
+                Date: {{ o.created_at.date | dateBr}}<br />
+                Status: {{ o.status}}<br />
+                QTD Items: {{ o.items.data.length }}
+                <span class="item-note">
+                    <i class="ion ion-cash"> R$ {{o.total}}</i>
+                </span>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

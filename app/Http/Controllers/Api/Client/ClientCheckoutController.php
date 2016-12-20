@@ -24,7 +24,7 @@ class ClientCheckoutController extends Controller
     private $orderService;
 
     //definir as relações que precisamos serializar
-    private $with = ['items', 'client', 'cupom'];
+    private $with = ['items', 'client', 'cupom', 'deliveryman'];
 
     public function __construct(OrderRepository $orderRepository, UserRepository $userRepository, ProductRepository $productRepository, OrderService $orderService)
     {
@@ -36,23 +36,26 @@ class ClientCheckoutController extends Controller
 
     public function index()
     {
+
         $id = Authorizer::getResourceOwnerId();
         $clientId = $this->userRepository->skipPresenter()->find($id)->client->id;
-        $orders = $this->orderRepository
-            ->skipPresenter(false)
-            ->with($this->with)->scopeQuery(function($query) use ($clientId) {
-            return $query->where('client_id', '=', $clientId);
-        })->paginate();
+
+//        $orders = $this->orderRepository->skipPresenter(false)->with($this->with)->scopeQuery(function($query) use ($clientId) {
+//                return $query->where('client_id', '=', $clientId);
+//            })->paginate();
+
+        $orders = $this->orderRepository->skipPresenter(false)->with($this->with)->orderBy('created_at','=','desc')->findWhere(['client_id' => $clientId]);
 
         return $orders;
     }
 
     public function store(CheckoutRequest $request)
     {
+
         $data = $request->all();
         $id = Authorizer::getResourceOwnerId();
-        $clientId = $this->userRepository->find($id)->client->id;
-        $data['client_id'] = $clientId;
+        $clientId = $this->userRepository->find($id);
+        $data['client_id'] = $clientId['data']['id'];
         $order = $this->orderService->create($data);
         //$order = $this->orderRepository->with(['items'])->find($order->id);
         return $this->orderRepository

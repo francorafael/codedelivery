@@ -11,7 +11,7 @@ use CodeDelivery\Models\Order;
  */
 class OrderTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = ['cupom', 'items', 'client'];
+    protected $availableIncludes = ['cupom', 'items', 'client', 'deliveryman'];
     // tenho que passar os includes por paramentros atraves do GET
     //protected $availableIncludes = [];
     /**
@@ -25,7 +25,7 @@ class OrderTransformer extends TransformerAbstract
         return [
             'id'         => (int) $model->id,
             'total'      => $model->total,
-            'status'     => $model->status,
+            'status'     => \CodeDelivery\Http\Helpers\formatStatusOrder($model->status),
             /* place your other model properties here */
 
             'created_at' => $model->created_at,
@@ -37,6 +37,14 @@ class OrderTransformer extends TransformerAbstract
     public function includeClient(Order $model)
     {
         return $this->item($model->client, new ClientTransformer());
+    }
+
+    public function includeDeliveryman(Order $model)
+    {
+        if(!$model->deliveryman)
+            return null;
+
+        return $this->item($model->deliveryman, new DeliverymanTransformer());
     }
 
     //Many to One - CUmpo
