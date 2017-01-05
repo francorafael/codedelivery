@@ -9,11 +9,12 @@ angular.module('starter.filters', []);
 angular.module('starter.services', ['ngResource']);
 angular.module('starter.directives', []);
 
-var starter = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-oauth2']);
+var starter = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-oauth2', 'ngCordova']);
 
 starter.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSerializerProvider){
     var config = {
-        baseUrl: 'http://localhost:8000/',
+        baseUrl: 'http://192.168.0.94:8000/',
+       //baseUrl: 'http://localhost:8000/',
     };
     return {
         config: config,
@@ -24,7 +25,8 @@ starter.provider('appConfig', ['$httpParamSerializerProvider', function($httpPar
 }]);
 
 starter.constant('appDevConfig', {
-    baseUrl: 'http://localhost:8000/'
+    baseUrl: 'http://192.168.0.94:8000/'
+    //baseUrl: 'http://localhost:8000/'
 });
 
 starter.service('cart', function() {
@@ -51,8 +53,8 @@ starter.run(['$ionicPlatform', function($ionicPlatform) {
   });
 }])
 
-starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appDevConfig',
-    function ($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, appDevConfig) {
+starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appDevConfig', '$provide',
+    function ($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, appDevConfig, $provide) {
 
 
         /*AUTENTICACAO*/
@@ -81,6 +83,7 @@ starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthT
             })
             /*HOME*/
             .state('home', {
+                cache: false,
                 url:'/home',
                 templateUrl: 'templates/home.html',
                 controller:  'HomeCtrl'
@@ -123,5 +126,37 @@ starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthT
                 controller: 'ClientViewProductCtrl'
             })
         ;
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/login');
+
+        $provide.decorator('OAuthToken', ['$localStorage', '$delegate',  function ($localStorage, $delegate) {
+            //DEFINIR PROPRIEDADES DESSE OBJETO
+            Object.defineProperties($delegate, {
+                setToken: {
+                    value: function(data) {
+                        $localStorage.setObject('token', data);
+                    },
+                    enumerable:true,
+                    configurable:true,
+                    writable:true
+                },
+                getToken: {
+                    value: function() {
+                        return $localStorage.getObject('token');
+                    },
+                    enumerable:true,
+                    configurable:true,
+                    writable:true
+                },
+                removeToken: {
+                    value: function() {
+                        $localStorage.setObject('token', null);
+                    },
+                    enumerable:true,
+                    configurable:true,
+                    writable:true
+                }
+            });
+
+            return $delegate;
+        }]);
     }]);

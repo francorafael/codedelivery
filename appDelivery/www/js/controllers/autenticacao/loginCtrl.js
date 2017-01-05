@@ -16,7 +16,7 @@ angular.module('starter.controllers')
                         $cookies.putObject('user', data);
                     });
 
-                $state.go('home');
+                $state.go('client.view_product');
             }, function (responseError) {
                 $ionicPopup.alert({
                     title: 'Advertência',
