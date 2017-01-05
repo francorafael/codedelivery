@@ -22,28 +22,37 @@ angular.module('starter.controllers')
                 };
 
                 $scope.save = function() {
-                    //clonar objeto
-                    var o = {items: angular.copy($scope.items)};
-                    angular.forEach(o.items, function(item){
-                       item.product_id = item.id;
-                    });
-                    $ionicLoading.show({
-                        template: 'Salvando...'
-                    });
-                    if($scope.cupom.value)
+
+                    if($scope.total < $scope.cupom)
                     {
-                        o.cupom_code = $scope.cupom.code;
-                    }
-                    Order.save({id:null}, o, function(data) {
-                        $ionicLoading.hide();
-                        $state.go('client.checkout_successful');
-                    }, function(responseError) {
-                        $ionicLoading.hide();
                         $ionicPopup.alert({
                             title: 'Atenção',
-                            template: 'Pedido não realizado! Tente Novamente!'
+                            template: 'Você precisa selecionar mais produtos para conseguir utilizar o cupom!'
                         });
-                    });
+                    } else {
+                        //clonar objeto
+                        var o = {items: angular.copy($scope.items)};
+                        angular.forEach(o.items, function(item){
+                            item.product_id = item.id;
+                        });
+                        $ionicLoading.show({
+                            template: 'Salvando...'
+                        });
+                        if($scope.cupom.value)
+                        {
+                            o.cupom_code = $scope.cupom.code;
+                        }
+                        Order.save({id:null}, o, function(data) {
+                            $ionicLoading.hide();
+                            $state.go('client.checkout_successful');
+                        }, function(responseError) {
+                            $ionicLoading.hide();
+                            $ionicPopup.alert({
+                                title: 'Atenção',
+                                template: 'Pedido não realizado! Tente Novamente!'
+                            });
+                        });
+                    }
                 };
 
                 $scope.readBarCode = function () {
@@ -67,15 +76,27 @@ angular.module('starter.controllers')
                 };
 
                 function getValueCupom(code) {
+
                     $ionicLoading.show({
                         template: 'Carregando...'
                     });
 
                     Cupom.get({code: code}, function (data) {
-                        $cart.setCupom(data.data.code, data.data.value);
-                        $scope.cupom = $cart.get().cupom;
                         $scope.total = $cart.getTotalFinal();
-                        $ionicLoading.hide();
+                        if($scope.total < data.data.value)
+                        {
+                            $ionicLoading.hide();
+                            $ionicPopup.alert({
+                                title: 'Atenção',
+                                template: 'Selecione mais produtos para utilizar o cupom no valor de R$' + data.data.value+'!'
+                            });
+                        } else {
+                            $cart.setCupom(data.data.code, data.data.value);
+                            $scope.cupom = $cart.get().cupom;
+                            $scope.total = $cart.getTotalFinal();
+                            $ionicLoading.hide();
+                        }
+
                     }, function (responseError) {
                         $ionicLoading.hide();
                         $ionicPopup.alert({
