@@ -1,1 +1,41 @@
 /* Empty. Add your own CSS if you like */
+.status-processing {
+    color: #fff !important;
+    border-color: #e6b500;
+    background-color: #ffc900;
+    padding: 2px;
+    text-align: center;
+    font-weight: bold;
+
+}
+
+.status-finished {
+    color: #fff !important;
+    border-color: #28a54c;
+    background-color: #28a54c;
+    background-image: linear-gradient(0deg, #28a54c, #28a54c 50%, transparent 50%);
+    padding: 2px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.status-delivering {
+    color: #fff !important;
+    border-color: #0a9dc7;
+    background-color: #0a9dc7;
+    background-image: linear-gradient(0deg, #0a9dc7, #0a9dc7 50%, transparent 50%);
+    padding: 2px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.status-canceled {
+    color: #fff !important;
+    border-color: #e42112;
+    background-color: #e42112;
+    background-image: linear-gradient(0deg, #e42112, #e42112 50%, transparent 50%);
+    padding: 2px;
+    text-align: center;
+    font-weight: bold;
+}
+

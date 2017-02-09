@@ -9,12 +9,13 @@ angular.module('starter.filters', []);
 angular.module('starter.services', ['ngResource']);
 angular.module('starter.directives', []);
 
-var starter = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-oauth2', 'ngCordova']);
+var starter = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filters',
+                                            'angular-oauth2', 'ngCordova']);
 
 starter.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSerializerProvider){
     var config = {
-        baseUrl: 'http://192.168.0.94:8000/',
-       //baseUrl: 'http://localhost:8000/',
+        //baseUrl: 'http://192.168.0.94:8000/',
+       baseUrl: 'http://localhost:8000/',
     };
     return {
         config: config,
@@ -25,8 +26,8 @@ starter.provider('appConfig', ['$httpParamSerializerProvider', function($httpPar
 }]);
 
 starter.constant('appDevConfig', {
-    baseUrl: 'http://192.168.0.94:8000/'
-    //baseUrl: 'http://localhost:8000/'
+    //baseUrl: 'http://192.168.0.94:8000/'
+    baseUrl: 'http://localhost:8000/'
 });
 
 starter.service('cart', function() {
@@ -92,7 +93,8 @@ starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthT
             .state('client', {
                 abstract: true,
                 url:'/client',
-                template:'<ion-nav-view/>'
+                templateUrl:'templates/client/menu.html',
+                controller: 'ClientMenuCtrl'
             })
             .state('client.checkout', {
                 cache: false,
@@ -118,6 +120,13 @@ starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthT
                 url: '/checkout/orders',
                 templateUrl: 'templates/client/checkout-orders.html',
                 controller: 'ClientCheckoutOrderListCtrl'
+            })
+
+            .state('client.checkout_view_order', {
+                cache: false,
+                url: '/checkout/view_order/:id',
+                templateUrl: 'templates/client/view-order.html',
+                controller: 'ClientCheckoutViewOrderCtrl'
             })
 
             .state('client.view_product', {

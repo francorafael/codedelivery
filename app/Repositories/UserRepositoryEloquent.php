@@ -20,6 +20,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      * @return string
      */
 
+    protected $skipPresenter = true;
+
     public function model()
     {
         return User::class;

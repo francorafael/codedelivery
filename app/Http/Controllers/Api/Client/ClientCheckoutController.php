@@ -40,11 +40,12 @@ class ClientCheckoutController extends Controller
         $id = Authorizer::getResourceOwnerId();
         $clientId = $this->userRepository->skipPresenter()->find($id)->client->id;
 
-//        $orders = $this->orderRepository->skipPresenter(false)->with($this->with)->scopeQuery(function($query) use ($clientId) {
-//                return $query->where('client_id', '=', $clientId);
-//            })->paginate();
+        $orders = $this->orderRepository->skipPresenter(false)->with($this->with)->scopeQuery(function($query) use ($clientId) {
+                return $query->where('client_id', '=', $clientId);
+            })->paginate();
 
-        $orders = $this->orderRepository->skipPresenter(false)->with($this->with)->orderBy('created_at','=','desc')->findWhere(['client_id' => $clientId]);
+        //$orders = $this->orderRepository->skipPresenter(false)->with($this->with)->orderBy('created_at','=','desc')->findWhere(['client_id' => $clientId]);
+        //$orders = $this->orderRepository->skipPresenter(false)->with($this->with)->findWhere(['client_id' => $clientId]);
 
         return $orders;
     }
@@ -55,7 +56,8 @@ class ClientCheckoutController extends Controller
         $data = $request->all();
         $id = Authorizer::getResourceOwnerId();
         $clientId = $this->userRepository->find($id);
-        $data['client_id'] = $clientId['data']['id'];
+        //$data['client_id'] = $clientId['data']['id'];
+        $data['client_id'] = $clientId->id;
         $order = $this->orderService->create($data);
         //$order = $this->orderRepository->with(['items'])->find($order->id);
         return $this->orderRepository

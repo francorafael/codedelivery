@@ -1,11 +1,17 @@
 angular.module('starter.controllers')
     .controller('ClientCheckoutCtrl',[
-        '$scope', '$state', '$cart', 'Order', '$ionicLoading', '$ionicPopup', 'Cupom', '$cordovaBarcodeScanner',
-            function ($scope, $state, $cart, Order, $ionicLoading, $ionicPopup, Cupom, $cordovaBarcodeScanner) {
+        '$scope', '$state', '$cart', 'Order', '$ionicLoading', '$ionicPopup', 'Cupom', '$cordovaBarcodeScanner', 'User',
+            function ($scope, $state, $cart, Order, $ionicLoading, $ionicPopup, Cupom, $cordovaBarcodeScanner, User) {
                 var cart = $cart.get();
                 $scope.cupom = cart.cupom;
                 $scope.items = cart.items;
                 $scope.total = $cart.getTotalFinal();
+
+                User.authenticated({include: 'client'}, function (data) {
+                    console.log(data.data)
+                }, function (responseError) {
+                    console.log("ERRO");
+                });
 
                 $scope.removeItem = function(i){
                     $cart.removeItem(i);
