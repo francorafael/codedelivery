@@ -1,7 +1,8 @@
 angular.module('starter.controllers')
     .controller('LoginCtrl',[
-    '$scope', 'OAuth', '$ionicPopup', '$state', '$cookies', 'User', 'appConfig',
-    function ($scope, OAuth, $ionicPopup, $state, $cookies, User, appConfig) {
+    '$scope', 'OAuth', 'OAuthToken', '$ionicPopup', '$state', '$cookies', 'User', 'UserData', 'appConfig',
+    function ($scope,  OAuth, OAuthToken, $ionicPopup, $state, $cookies, User, UserData, appConfig) {
+
         $scope.url = appConfig.baseUrl;
         $scope.user = {
             username: "user@user.com",
@@ -9,20 +10,23 @@ angular.module('starter.controllers')
         };
 
         $scope.login = function () {
-            OAuth.getAccessToken($scope.user).then(function (responseSuccess) {
-
-                User.authenticated({}, {},
-                    function (data) {
-                        $cookies.putObject('user', data);
+            var promise = OAuth.getAccessToken($scope.user);
+            promise
+                .then(function (data) {
+                    return User.authenticated({include: 'client'}).$promise;
+                })
+                .then(function (data){
+                    UserData.set(data.data);
+                    $state.go('client.view_product');
+                }, function(responseError){
+                    UserData.set(null);
+                    OAuthToken.removeToken();
+                    $ionicPopup.alert({
+                        title: 'Advertência',
+                        template: 'Login e/ou senha inválidos'
                     });
-
-                $state.go('client.view_product');
-            }, function (responseError) {
-                $ionicPopup.alert({
-                    title: 'Advertência',
-                    template: 'Login e/ou senha inválidos'
+                    console.debug(responseError);
                 });
-            });
         };
     }])
 

@@ -92,6 +92,7 @@ starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthT
             /*CLIENT*/
             .state('client', {
                 abstract: true,
+                cache:false,
                 url:'/client',
                 templateUrl:'templates/client/menu.html',
                 controller: 'ClientMenuCtrl'
@@ -133,6 +134,27 @@ starter.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthT
                 url: '/view_products',
                 templateUrl: 'templates/client/view-product.html',
                 controller: 'ClientViewProductCtrl'
+            })
+
+            /*DELIVERYMAN*/
+            .state('deliveryman', {
+                abstract: true,
+                cache:false,
+                url:'/deliveryman',
+                templateUrl:'templates/deliveryman/menu.html',
+                controller: 'DeliverymanMenuCtrl'
+            })
+            .state('deliveryman.order', {
+                cache: false,
+                url: '/order',
+                templateUrl: 'templates/deliveryman/order.html',
+                controller: 'DeliverymanOrderCtrl'
+            })
+            .state('deliveryman.view_order', {
+                cache: false,
+                url: '/view_order/:id',
+                templateUrl: 'templates/deliveryman/view-order.html',
+                controller: 'DeliverymanViewOrderCtrl'
             })
         ;
         $urlRouterProvider.otherwise('/login');

@@ -1,7 +1,7 @@
 angular.module('starter.controllers')
     .controller('ClientCheckoutOrderListCtrl',[
-        '$scope', '$state', 'OrderList', '$ionicLoading',
-            function ($scope, $state, OrderList, $ionicLoading) {
+        '$scope', '$state', 'ClientOrderList', '$ionicLoading',
+            function ($scope, $state, ClientOrderList, $ionicLoading) {
                 $scope.orders = [];
 
                 $ionicLoading.show({
@@ -22,7 +22,7 @@ angular.module('starter.controllers')
                 };
 
                 function getOrders() {
-                    return OrderList.get({
+                    return ClientOrderList.get({
                         orderBy:'created_at',
                         sortedBy: 'desc'
                     }).$promise;

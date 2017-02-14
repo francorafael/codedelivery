@@ -1,4 +1,4 @@
-angular.module('starter.controllers').controller('ClientMenuCtrl',[
+angular.module('starter.controllers').controller('DeliverymanMenuCtrl',[
     '$scope', 'UserData',
     function ($scope, UserData) {
         $scope.user = UserData.get();
